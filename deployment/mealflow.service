@@ -1,0 +1,15 @@
+[Unit]
+Description=MealFlow FastAPI Application
+After=network.target
+
+[Service]
+User=mealflow
+Group=mealflow
+WorkingDirectory=/opt/mealflow
+EnvironmentFile=/opt/mealflow/.env
+ExecStart=/opt/mealflow/venv/bin/gunicorn app.main:app -k uvicorn_worker.UvicornWorker --workers 2 --bind 127.0.0.1:8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

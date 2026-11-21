@@ -132,3 +132,34 @@ def get_order(
         )
 
     return order
+from fastapi import HTTPException, Depends
+from sqlalchemy.orm import Session
+from app.database import get_db
+from app.models import Order, User
+from app.schemas import OrderResponse
+from app.dependencies import get_current_user
+
+@router.patch("/{order_id}/cancel", response_model=OrderResponse)
+def cancel_order(
+    order_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    order = db.query(Order).filter(
+        Order.id == order_id,
+        Order.user_id == current_user.id
+    ).first()
+
+    if order is None:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    if order.status != "placed":
+        raise HTTPException(
+            status_code=400,
+            detail="Only placed orders can be cancelled"
+        )
+
+    order.status = "cancelled"
+    db.commit()
+    db.refresh(order)
+    return order
