@@ -1,3 +1,4 @@
+import os
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -7,7 +8,10 @@ from app.database import Base, get_db
 from app.main import app
 from app import models
 
-TEST_DATABASE_URL = "postgresql+pg8000://mealflow:mealflow_dev_password@localhost:5433/mealflow_db"
+TEST_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+pg8000://mealflow:mealflow_dev_password@localhost:5433/mealflow_db"
+)
 
 engine = create_engine(TEST_DATABASE_URL)
 TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
