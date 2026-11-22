@@ -83,6 +83,7 @@ class OrderItemResponse(BaseSchema):
     menu_item_id: int
     quantity: int
     price: Decimal
+    menu_item: MenuItemResponse
 
 
 # Information returned about an order

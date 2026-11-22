@@ -23,7 +23,8 @@ settings = Settings()
 # Connect our application to the database
 engine = create_engine(
     settings.DATABASE_URL,
-    echo=True
+    echo=False,
+    pool_pre_ping=True
 )
 
 

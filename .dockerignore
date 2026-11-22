@@ -1,7 +1,15 @@
 ﻿venv/
 .venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*.backup
 .env
+.env.*
 .git/
 .pytest_cache/
+.coverage
+node_modules/
+dist/
+frontend/
+api-openapi.json
+api-summary.txt

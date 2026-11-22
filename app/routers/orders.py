@@ -87,7 +87,7 @@ def checkout(
 
     return (
         db.query(Order)
-        .options(joinedload(Order.items))
+        .options(joinedload(Order.items).joinedload(OrderItem.menu_item))
         .filter(Order.id == new_order.id)
         .first()
     )
@@ -101,7 +101,7 @@ def get_my_orders(
 ):
     return (
         db.query(Order)
-        .options(joinedload(Order.items))
+        .options(joinedload(Order.items).joinedload(OrderItem.menu_item))
         .filter(Order.user_id == current_user.id)
         .order_by(Order.created_at.desc())
         .all()
@@ -117,7 +117,7 @@ def get_order(
 ):
     order = (
         db.query(Order)
-        .options(joinedload(Order.items))
+        .options(joinedload(Order.items).joinedload(OrderItem.menu_item))
         .filter(
             Order.id == order_id,
             Order.user_id == current_user.id
